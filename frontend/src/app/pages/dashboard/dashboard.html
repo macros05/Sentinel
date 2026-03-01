@@ -1,0 +1,75 @@
+<div class="dashboard-container">
+  
+  <div class="timer-card">
+    <h1>Sentinel 🌲</h1>
+
+    <div class="system-status">
+      <div class="status-indicator" [class.active]="isWatcherRunning">
+        {{ isWatcherRunning ? 'Watcher Active 🛡️' : 'Watcher Stopped 💤' }}
+      </div>
+      <button 
+        class="btn-watcher" 
+        [class.running]="isWatcherRunning"
+        (click)="toggleWatcher()">
+        {{ isWatcherRunning ? 'Stop Watcher' : 'Start Watcher' }}
+      </button>
+    </div>
+
+    <div class="duration-controls">
+      <button 
+        [class.active]="WORK_MINUTES === 5" 
+        (click)="setDuration(5)" 
+        title="Short Break">
+        ☕ 5m
+      </button>
+      <button 
+        [class.active]="WORK_MINUTES === 25" 
+        (click)="setDuration(25)" 
+        title="Classic Pomodoro">
+        🍅 25m
+      </button>
+      <button 
+        [class.active]="WORK_MINUTES === 50" 
+        (click)="setDuration(50)" 
+        title="Deep Focus">
+        🧠 50m
+      </button>
+    </div>
+    
+    <div class="timer-circle">
+      <span class="time-display">{{ formatTime }}</span>
+    </div>
+
+    <div class="controls">
+      <button 
+        class="btn-main" 
+        [class.paused]="isRunning"
+        (click)="toggleTimer()">
+        {{ isRunning ? 'Pause' : 'Start' }}
+      </button>
+      <button class="btn-secondary" (click)="resetTimer()">
+        Reset
+      </button>
+    </div>
+
+    <app-usage-list></app-usage-list>
+  </div>
+  
+  <div class="panels-wrapper">
+    <div class="panels-grid">
+      <div class="banned-zone">
+        <app-blocked-apps-list></app-blocked-apps-list>
+      </div>
+      <div class="checklist">
+        <app-task-list></app-task-list>
+      </div>
+    </div>
+
+    <div class="logout-section">
+      <button class="btn-logout" (click)="logout()">
+        Sign Out 🚪
+      </button>
+    </div>
+  </div>
+
+</div>

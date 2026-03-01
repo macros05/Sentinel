@@ -1,0 +1,36 @@
+<div class="tasks-card">
+  <div class="card-header">
+    <h3>📝 Checklist</h3>
+    <span class="counter" *ngIf="tasks.length > 0">
+      <!-- Muestra: Completadas / Totales -->
+      {{ (tasks | filterCompleted).length }} / {{ tasks.length }}
+    </span>
+  </div>
+
+  <div class="add-form">
+    <input 
+      type="text" 
+      [(ngModel)]="newTaskTitle" 
+      placeholder="Añadir tarea..." 
+      (keyup.enter)="addTask()">
+    <button (click)="addTask()">+</button>
+  </div>
+
+  <ul class="task-list">
+    <li *ngFor="let task of tasks" class="task-item" [class.done]="task.completed">
+      
+      <div class="checkbox" (click)="toggleTask(task)">
+        <span *ngIf="task.completed">✓</span>
+      </div>
+      
+      <span class="title" (click)="toggleTask(task)">{{ task.title }}</span>
+      
+    </li>
+  </ul>
+
+  <div *ngIf="tasks.length === 0" class="empty-state">
+    <div class="empty-icon">📌</div>
+    <p>Nada pendiente.</p>
+    <small>¡Añade tus objetivos de hoy!</small>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+<div class="usage-card">
+  <div class="card-header">
+    <h3>📊 Consumo de Hoy</h3>
+  </div>
+
+  <ul class="usage-list" *ngIf="usageList.length > 0">
+    <li *ngFor="let usage of usageList" class="usage-item">
+      
+      <div class="info">
+        <span class="app-name">{{ usage.app_name }}</span>
+        <span class="time">{{ formatDuration(usage.total_seconds) }}</span>
+      </div>
+      
+      <div class="progress-bar">
+        <div class="fill" [style.width.%]="(usage.total_seconds / 3600) * 100"></div>
+      </div>
+      
+    </li>
+  </ul>
+
+  <div *ngIf="usageList.length === 0" class="empty-state">
+    <div class="empty-icon">✨</div>
+    <p>Sin distracciones hoy.</p>
+    <small>¡Sigue así!</small>
+  </div>
+</div>

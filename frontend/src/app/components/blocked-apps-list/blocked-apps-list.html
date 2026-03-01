@@ -1,0 +1,41 @@
+<div class="blocked-card">
+  <div class="card-header">
+    <h3>🛡️ Zona Prohibida </h3>
+    <span class="counter" *ngIf="apps.length > 0">{{ apps.length }}</span>
+  </div>
+  
+  <div class="add-form">
+    <input 
+      type="text" 
+      [(ngModel)]="newAppName" 
+      placeholder="Añadir app (ej: Spotify)..." 
+      (keyup.enter)="addApp()">
+    
+    <button (click)="addApp()" title="Añadir a la lista negra">
+      <span class="plus-icon">+</span>
+    </button>
+  </div>
+
+  <div class="list-container">
+    <ul class="app-list" *ngIf="apps.length > 0">
+      <li *ngFor="let app of apps" class="app-item">
+        <div class="app-info">
+          <span class="icon">🚫</span>
+          <span class="name">{{ app.app_name }}</span>
+        </div>
+        <div class = "actions">
+          <span class="status-badge active">Bloqueado</span>
+            <button class="btn-delete" (click)="deleteApp(app.id)" title="Eliminar">
+                    🗑️
+            </button>
+        </div>
+      </li>
+    </ul>
+    
+    <div *ngIf="apps.length === 0" class="empty-state">
+      <div class="empty-icon">🍃</div>
+      <p>Tu mente está libre.</p>
+      <small>Añade apps para proteger tu foco.</small>
+    </div>
+  </div>
+</div>

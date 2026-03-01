@@ -1,0 +1,85 @@
+// Colores Forest
+$bg-color: #f4f1ea;       // Beige suave
+$card-bg: #ffffff;        // Blanco
+$primary-green: #2d6a4f;  // Verde bosque intenso
+$text-color: #1b4332;     // Verde muy oscuro (casi negro)
+$error-color: #d00000;
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; // Ocupa toda la pantalla
+  background-color: $bg-color;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.login-card {
+  background-color: $card-bg;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+
+  h2 {
+    color: $text-color;
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    color: lighten($text-color, 20%);
+    margin-bottom: 2rem;
+  }
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+  text-align: left;
+
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: $text-color;
+    font-weight: 500;
+  }
+
+  input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-sizing: border-box; // Importante para que no se salga del ancho
+
+    &:focus {
+      outline: none;
+      border-color: $primary-green;
+    }
+  }
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 0.8rem;
+  background-color: $primary-green;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s;
+
+  &:hover {
+    background-color: darken($primary-green, 5%);
+  }
+}
+
+.error-message {
+  color: $error-color;
+  background-color: rgba($error-color, 0.1);
+  padding: 0.5rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}

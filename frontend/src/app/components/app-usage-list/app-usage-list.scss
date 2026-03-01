@@ -1,0 +1,71 @@
+$primary-green: #2d6a4f;
+$dark-text: #1b4332;
+$white: #ffffff;
+$gray-light: #f0f0f0;
+$warning-color: #e76f51;
+
+.usage-card {
+  background: $white;
+  border-radius: 16px;
+  padding: 1.2rem 1.5rem; // ✅ Menos padding para que respire mejor
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06); // ✅ Sombra más sutil (ya está dentro de otra card)
+  width: 100%; // ✅ Ocupa todo el ancho disponible del padre
+  max-width: 100%; // ✅ Sin límite externo, el padre ya lo limita
+  box-sizing: border-box; // ✅ El padding no desborda
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.card-header h3 {
+  margin: 0;
+  color: $dark-text;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.usage-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.usage-item {
+  margin-bottom: 1rem;
+
+  .info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+    color: $dark-text;
+    font-weight: 600;
+  }
+
+  .progress-bar {
+    height: 8px;
+    background-color: $gray-light;
+    border-radius: 4px;
+    overflow: hidden;
+
+    .fill {
+      height: 100%;
+      background-color: $warning-color;
+      border-radius: 4px;
+      max-width: 100%;
+      transition: width 0.5s ease-out;
+    }
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 1.5rem 0; // ✅ Menos padding vertical
+  color: lighten($dark-text, 30%);
+
+  .empty-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+}
