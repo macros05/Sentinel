@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
 
-  private apiUrl = "http://127.0.0.1:8000";
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
@@ -20,4 +21,8 @@ export class AuthService {
 
     return this.http.post(`${this.apiUrl}/auth/login`, formData);
   }
+
+  register(data: { email: string, password: string }): Observable<any> {
+  return this.http.post(`${this.apiUrl}/auth/register`, data);
+}
 }

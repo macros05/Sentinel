@@ -12,6 +12,7 @@ import { TaskList } from '../../components/task-list/task-list';
 
 import { NgZone } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment.development';
 
 @Component({
   selector: 'app-dashboard',
@@ -35,9 +36,8 @@ export class DashboardComponent implements OnDestroy, OnInit {
   apps: any[] = [];
   private refreshInterval: any;
   endTime: number = 0;
-
-  // Added the API URL needed for the toggleWatcher function
-  private apiUrl = "http://127.0.0.1:8000";
+  showExtInfo: boolean = false;
+  private apiUrl = environment.apiUrl;
 
   constructor(
     private sessionService: SessionService,
@@ -170,39 +170,37 @@ ngOnInit(): void {
       clearInterval(this.refreshInterval);
     }
   }
-toggleWatcher() {
-    const token = localStorage.getItem('token'); 
-    const userId = localStorage.getItem('user_id'); 
+  toggleWatcher() {
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('user_id');
 
     if (!token || !userId) {
       alert("Error: Missing credentials. Please log in again.");
       return;
     }
 
-    const action = this.isWatcherRunning ? 'stop' : 'start';
-    const payload = { action: action, token: token, user_id: userId };
-
-    this.http.post(`${this.apiUrl}/watcher/toggle`, payload).subscribe({
-      next: (res: any) => {
-        this.isWatcherRunning = (res.status === 'started');
-        console.log(`Watcher ${res.status}`);
-        this.cdr.detectChanges(); 
-      },
-      error: (err) => {
-        console.error("Error with the Watcher", err);
-        alert("Failed to connect to the Watcher backend.");
-      }
-    });
-  }
-
-logout() {
-    if (this.isWatcherRunning) {
-      this.http.post(`${this.apiUrl}/watcher/toggle`, { action: 'stop' }).subscribe();
+    if (!this.isWatcherRunning) {
+      const url = `${this.apiUrl}/watcher/download?token=${token}&user_id=${userId}`;
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'sentinel_watcher.py';
+      a.click();
+      alert("✅ Watcher descargado!\n\nEjecuta en tu terminal:\n  pip install psutil requests\n  python sentinel_watcher.py");
+      this.isWatcherRunning = true;
+    } else {
+      this.isWatcherRunning = false;
     }
-
-    localStorage.removeItem('token');
-    localStorage.removeItem('user_id');
-
-    this.router.navigate(['/login']);
+    this.cdr.detectChanges();
   }
-}
+
+  logout() {
+      if (this.isWatcherRunning) {
+        this.http.post(`${this.apiUrl}/watcher/toggle`, { action: 'stop' }).subscribe();
+      }
+
+      localStorage.removeItem('token');
+      localStorage.removeItem('user_id');
+
+      this.router.navigate(['/login']);
+    }
+  }

@@ -83,3 +83,30 @@ $error-color: #d00000;
   margin-bottom: 1rem;
   font-size: 0.9rem;
 }
+
+
+.toggle-text {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 13px;
+  color: #6b7280;
+
+  span {
+    color: #2d6a4f;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+
+    &:hover { color: #1b4332; }
+  }
+}
+
+.success-message {
+  background: #d8f3dc;
+  color: #1b4332;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-bottom: 12px;
+  text-align: center;
+}

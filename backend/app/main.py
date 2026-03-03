@@ -25,18 +25,12 @@ from app.db.session import engine, SessionLocal
 POMODORO_REWARD_COINS = 10
 app = FastAPI()
 
-origins = [
-    "http://localhost:4200",
-    "http://127.0.0.1:4200",
-    "http://localhost:60109",
-]
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,       
-    allow_credentials=True,       
-    allow_methods=["*"],          
-    allow_headers=["*"],          
+    allow_origins=["http://REDACTED", "http://REDACTED:82"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 def get_db():
@@ -325,3 +319,59 @@ def toggle_watcher(payload: dict = Body(...)):
             watcher_process = None
             return {"status": "stopped"}
         return {"status": "not_running"}
+
+
+from fastapi.responses import Response
+
+@app.get("/watcher/download")
+def download_watcher(token: str, user_id: str):
+    watcher_content = f'''import psutil
+import time
+import requests
+
+API_URL = "http://REDACTED:8081"
+LOOP_SECONDS = 5
+TOKEN = "{token}"
+USER_ID = "{user_id}"
+
+def get_blacklist_from_api():
+    headers = {{"Authorization": f"Bearer {{TOKEN}}"}}
+    try:
+        response = requests.get(f"{{API_URL}}/blocked-apps/user/{{USER_ID}}", headers=headers)
+        if response.status_code == 200:
+            data = response.json()
+            return {{item["app_name"] for item in data if item["is_active"]}}
+        return set()
+    except Exception as e:
+        print(f"Error fetching blacklist: {{e}}")
+        return set()
+
+print(f"Watcher iniciado para usuario {{USER_ID}}...")
+try:
+    while True:
+        BLACKLIST = get_blacklist_from_api()
+        procesos_actuales = set()
+        for proc in psutil.process_iter(["name"]):
+            try:
+                procesos_actuales.add(proc.info["name"])
+            except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+                pass
+        app_a_reportar = BLACKLIST.intersection(procesos_actuales)
+        if app_a_reportar:
+            print(f"Reportando: {{app_a_reportar}}")
+            for app_name in app_a_reportar:
+                payload = {{"app_name": app_name, "seconds": LOOP_SECONDS, "user_id": int(USER_ID)}}
+                requests.post(
+                    f"{{API_URL}}/usage/record",
+                    json=payload,
+                    headers={{"Authorization": f"Bearer {{TOKEN}}"}}
+                )
+        time.sleep(LOOP_SECONDS)
+except KeyboardInterrupt:
+    print("Watcher detenido.")
+'''
+    return Response(
+        content=watcher_content,
+        media_type="text/plain",
+        headers={"Content-Disposition": "attachment; filename=sentinel_watcher.py"}
+    )

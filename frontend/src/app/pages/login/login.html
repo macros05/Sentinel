@@ -3,35 +3,50 @@
     <h2>Bienvenido a Sentinel 🌲</h2>
     <p class="subtitle">Tu guardián de enfoque</p>
 
-    <form (ngSubmit)="onLogin()">
-      
+    <!-- LOGIN FORM -->
+    <form *ngIf="!showRegister" (ngSubmit)="onLogin()">
       <div class="form-group">
         <label for="email">Email</label>
-        <input 
-          type="email" 
-          id="email" 
-          name="email" 
-          [(ngModel)]="credentials.email" 
-          required 
-          placeholder="tu@email.com">
+        <input type="email" id="email" name="email"
+          [(ngModel)]="credentials.email" required placeholder="tu@email.com">
       </div>
-
       <div class="form-group">
         <label for="password">Contraseña</label>
-        <input 
-          type="password" 
-          id="password" 
-          name="password" 
-          [(ngModel)]="credentials.password" 
-          required 
-          placeholder="••••••">
+        <input type="password" id="password" name="password"
+          [(ngModel)]="credentials.password" required placeholder="••••••">
       </div>
-
-      <div *ngIf="errorMessage" class="error-message">
-        {{ errorMessage }}
-      </div>
-
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
       <button type="submit" class="btn-primary">Entrar</button>
+      <p class="toggle-text">
+        ¿No tienes cuenta?
+        <span (click)="toggleForm()">Regístrate</span>
+      </p>
+    </form>
+
+    <!-- REGISTER FORM -->
+    <form *ngIf="showRegister" (ngSubmit)="onRegister()">
+      <div class="form-group">
+        <label for="reg-email">Email</label>
+        <input type="email" id="reg-email" name="reg-email"
+          [(ngModel)]="registerData.email" required placeholder="tu@email.com">
+      </div>
+      <div class="form-group">
+        <label for="reg-password">Contraseña</label>
+        <input type="password" id="reg-password" name="reg-password"
+          [(ngModel)]="registerData.password" required placeholder="Mínimo 6 caracteres">
+      </div>
+      <div class="form-group">
+        <label for="reg-confirm">Confirmar contraseña</label>
+        <input type="password" id="reg-confirm" name="reg-confirm"
+          [(ngModel)]="registerData.confirmPassword" required placeholder="Repite la contraseña">
+      </div>
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+      <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+      <button type="submit" class="btn-primary">Crear cuenta</button>
+      <p class="toggle-text">
+        ¿Ya tienes cuenta?
+        <span (click)="toggleForm()">Inicia sesión</span>
+      </p>
     </form>
   </div>
 </div>

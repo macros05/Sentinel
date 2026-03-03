@@ -4,16 +4,22 @@
     <h1>Sentinel 🌲</h1>
 
     <div class="system-status">
-      <div class="status-indicator" [class.active]="isWatcherRunning">
-        {{ isWatcherRunning ? 'Watcher Active 🛡️' : 'Watcher Stopped 💤' }}
-      </div>
-      <button 
-        class="btn-watcher" 
-        [class.running]="isWatcherRunning"
-        (click)="toggleWatcher()">
-        {{ isWatcherRunning ? 'Stop Watcher' : 'Start Watcher' }}
-      </button>
-    </div>
+  <div class="extension-info">
+    <span class="ext-label">🌲 Sentinel Watcher</span>
+    <button class="btn-ext-info" (click)="showExtInfo = !showExtInfo">
+      {{ showExtInfo ? 'Ocultar' : '¿Cómo activar?' }}
+    </button>
+  </div>
+
+  <div class="ext-instructions" *ngIf="showExtInfo">
+    <p>1. Instala la extensión de Chrome</p>
+    <p>2. Inicia sesión con tu cuenta</p>
+    <p>3. Pulsa <strong>Activar Watcher</strong> en la extensión</p>
+    <a href="https://chromewebstore.google.com" target="_blank" class="btn-ext-link">
+      🔗 Obtener extensión
+    </a>
+  </div>
+</div>
 
     <div class="duration-controls">
       <button 
