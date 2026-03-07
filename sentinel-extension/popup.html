@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sentinel</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      width: 320px;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f9fafb;
+      color: #1a1a1a;
+    }
+
+    .header {
+      background: #2d6a4f;
+      color: white;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header h1 {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .header span { font-size: 20px; }
+
+    .status-badge {
+      margin-left: auto;
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+
+    .status-badge.active {
+      background: #d8f3dc;
+      color: #1b4332;
+    }
+
+    .status-badge.inactive {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .section {
+      padding: 16px 20px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .section-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+    }
+
+    /* Login form */
+    .login-form { display: flex; flex-direction: column; gap: 10px; }
+
+    input {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus { border-color: #2d6a4f; }
+
+    .btn {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: #2d6a4f;
+      color: white;
+    }
+
+    .btn-primary:hover { background: #1b4332; }
+
+    .btn-danger {
+      background: #ef4444;
+      color: white;
+    }
+
+    .btn-danger:hover { background: #dc2626; }
+
+    .btn-secondary {
+      background: #e5e7eb;
+      color: #374151;
+    }
+
+    /* Usage list */
+    .usage-list { display: flex; flex-direction: column; gap: 8px; }
+
+    .usage-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 8px 12px;
+    }
+
+    .usage-app { font-size: 13px; font-weight: 500; }
+
+    .usage-time {
+      font-size: 12px;
+      color: #ef4444;
+      font-weight: 600;
+    }
+
+    .empty-msg {
+      text-align: center;
+      color: #9ca3af;
+      font-size: 13px;
+      padding: 10px 0;
+    }
+
+    .error-msg {
+      color: #ef4444;
+      font-size: 12px;
+      text-align: center;
+      margin-top: 4px;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+    }
+
+    .user-email { color: #374151; font-weight: 500; }
+
+    .logout-btn {
+      font-size: 11px;
+      color: #9ca3af;
+      cursor: pointer;
+      background: none;
+      border: none;
+      text-decoration: underline;
+    }
+
+    .logout-btn:hover { color: #ef4444; }
+
+    #loading {
+      text-align: center;
+      padding: 30px;
+      color: #9ca3af;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <span>🌲</span>
+    <h1>Sentinel</h1>
+    <span id="statusBadge" class="status-badge inactive">Inactivo</span>
+  </div>
+
+  <div id="loading">Cargando...</div>
+
+  <!-- Login view -->
+  <div id="loginView" style="display:none;">
+    <div class="section">
+      <div class="section-title">Iniciar sesión</div>
+      <div class="login-form">
+        <input type="email" id="emailInput" placeholder="tu@email.com" />
+        <input type="password" id="passwordInput" placeholder="Contraseña" />
+        <button class="btn btn-primary" id="loginBtn">Entrar</button>
+        <div id="loginError" class="error-msg" style="display:none;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main view -->
+  <div id="mainView" style="display:none;">
+    <div class="section">
+      <div class="user-info">
+        <span class="user-email" id="userEmail"></span>
+        <button class="logout-btn" id="logoutBtn">Cerrar sesión</button>
+      </div>
+    </div>
+
+    <div class="section">
+      <button class="btn btn-primary" id="toggleBtn">▶ Activar Watcher</button>
+    </div>
+
+    <div class="section">
+      <div class="section-title">📊 Consumo de hoy</div>
+      <div class="usage-list" id="usageList">
+        <div class="empty-msg">Sin distracciones hoy ✨</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
