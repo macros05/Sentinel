@@ -9,7 +9,9 @@ $error-color: #d00000;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; // Ocupa toda la pantalla
+  min-height: 100vh;
+  padding: 1rem;
+  box-sizing: border-box;
   background-color: $bg-color;
   font-family: 'Segoe UI', sans-serif;
 }
@@ -22,6 +24,7 @@ $error-color: #d00000;
   width: 100%;
   max-width: 600px;
   text-align: center;
+  box-sizing: border-box;
 
   h2 {
     color: $text-color;
@@ -109,4 +112,11 @@ $error-color: #d00000;
   font-size: 13px;
   margin-bottom: 12px;
   text-align: center;
+}
+
+@media (max-width: 600px) {
+  .login-card {
+    padding: 1.5rem 1.25rem;
+    border-radius: 8px;
+  }
 }
