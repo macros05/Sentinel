@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AppUsage } from '../../services/app-usage/app-usage';
 import { MaterialModule } from '../../material/material.module';
-import { ImplementationLocation } from 'typescript';
 
 @Component({
   selector: 'app-usage-list',
