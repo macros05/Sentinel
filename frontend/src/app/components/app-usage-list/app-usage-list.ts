@@ -1,18 +1,18 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { AppUsage } from '../../services/app-usage/app-usage';
 import { MaterialModule } from '../../material/material.module';
-import { ImplementationLocation } from 'typescript';
 
 @Component({
   selector: 'app-usage-list',
-  imports: [MaterialModule],
+  imports: [CommonModule, MaterialModule],
   templateUrl: './app-usage-list.html',
   styleUrl: './app-usage-list.scss',
 })
-export class AppUsageList implements OnInit, OnDestroy{
+export class AppUsageList implements OnInit, OnDestroy {
 
   usageList: any[] = [];
-  user_id: number = 0; 
+  user_id: number = 0;
   private refreshInterval: any;
 
   constructor(private usageService: AppUsage) {}
@@ -20,12 +20,12 @@ export class AppUsageList implements OnInit, OnDestroy{
   ngOnInit() {
     const storedId = localStorage.getItem('user_id');
     if (storedId) {
-    this.user_id = Number(storedId);
-    this.loadUsage();
-    this.refreshInterval = setInterval(() => {
+      this.user_id = Number(storedId);
       this.loadUsage();
-    },1000);
-  }
+      this.refreshInterval = setInterval(() => {
+        this.loadUsage();
+      }, 5000);
+    }
   }
 
   ngOnDestroy() {

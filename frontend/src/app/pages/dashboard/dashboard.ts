@@ -1,6 +1,6 @@
 import { Component, OnDestroy, ChangeDetectorRef, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http'; // Added HttpClient import
+import { HttpClient } from '@angular/common/http';
 
 import { SessionService } from '../../services/session/session.service';
 import { BlockedAppService } from '../../services/blocked-app/blocked-app';

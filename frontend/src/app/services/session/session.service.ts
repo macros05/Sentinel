@@ -18,24 +18,24 @@ export class SessionService {
     });
   }
 
-    startSession(durationMinutes: number, userId: number): Observable <any> {
-      const body = {
-        user_id: userId,
-        duration_minutes: durationMinutes
-      };
-      return this.http.post(
-        `${this.apiUrl}/sessions/start`,
-        body,
-        { headers: this.getAuthHeaders()}
-      );
-    }
-
-    completeSession(sessionId: number): Observable <any> {
-      return this.http.post(
-        `${this.apiUrl}/sessions/complete/${sessionId}`,
-        {},
-        { headers: this.getAuthHeaders()}
-      );
-    }
+  startSession(durationMinutes: number, userId: number): Observable<any> {
+    const body = {
+      user_id: userId,
+      duration_minutes: durationMinutes
+    };
+    return this.http.post(
+      `${this.apiUrl}/sessions/start`,
+      body,
+      { headers: this.getAuthHeaders() }
+    );
   }
+
+  completeSession(sessionId: number): Observable<any> {
+    return this.http.post(
+      `${this.apiUrl}/sessions/complete/${sessionId}`,
+      {},
+      { headers: this.getAuthHeaders() }
+    );
+  }
+}
 
