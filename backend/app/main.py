@@ -1,15 +1,15 @@
-from fastapi import FastAPI, Depends, HTTPException, Path, Body
+from fastapi import FastAPI, Depends, HTTPException, Path, Body, Response
 from sqlalchemy import text, create_engine
 from typing import List
 from fastapi.security import OAuth2PasswordRequestForm
-from fastapi.middleware.cors import CORSMiddleware 
+from fastapi.middleware.cors import CORSMiddleware
 
 # Schemas
 from app.schemas.user import UserCreate, UserOut
 from app.schemas.session import SessionCreate, SessionOut
 from app.schemas.blocked_app import BlockedAppOut, BlockedAppCreate
 from app.schemas.app_usage import AppUsageCreate, AppUsageOut
-from app.schemas.token import Token
+from app.schemas.token import LoginResponse
 from app.schemas.task import TaskCreate, TaskOut, TaskUpdate
 
 # CRUD
@@ -179,28 +179,38 @@ def get_usage_by_user_and_date(
     
     return db_usages
 
-@app.post("/auth/login", response_model= Token)
+@app.post("/auth/login", response_model=LoginResponse)
 def login_for_access_token(
+    response: Response,
     db: Session = Depends(get_db),
     form_data: OAuth2PasswordRequestForm = Depends()
 ):
-    user = crud_user.get_user_by_email(db, email= form_data.username)
+    user = crud_user.get_user_by_email(db, email=form_data.username)
 
     if not user or not security.verify_password(form_data.password, user.password_hash):
         raise HTTPException(
             status_code=400,
-            detail =  "Email o contraseña incorrectos",
-            headers = {"WWW-Authenticate": "Bearer"}
+            detail="Email o contraseña incorrectos",
+            headers={"WWW-Authenticate": "Bearer"}
         )
-    
-    access_token = security.create_token(
-        data={"sub": user.email}
+
+    access_token = security.create_token(data={"sub": user.email})
+
+    response.set_cookie(
+        key="access_token",
+        value=access_token,
+        httponly=True,
+        samesite="lax",
+        max_age=60 * 60 * 24 * 7
     )
 
-    return {"access_token": access_token, 
-            "token_type": "bearer",
-            "user_id": user.id    
-        }
+    return {"user_id": user.id}
+
+
+@app.post("/auth/logout")
+def logout(response: Response):
+    response.delete_cookie(key="access_token", samesite="lax")
+    return {"message": "Logged out"}
 
 @app.post("/tasks", response_model=TaskOut)
 def create_task(

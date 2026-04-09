@@ -194,13 +194,19 @@ ngOnInit(): void {
   }
 
   logout() {
-      if (this.isWatcherRunning) {
-        this.http.post(`${this.apiUrl}/watcher/toggle`, { action: 'stop' }).subscribe();
-      }
-
-      localStorage.removeItem('token');
-      localStorage.removeItem('user_id');
-
-      this.router.navigate(['/login']);
+    if (this.isWatcherRunning) {
+      this.http.post(`${this.apiUrl}/watcher/toggle`, { action: 'stop' }).subscribe();
     }
+
+    this.http.post(`${this.apiUrl}/auth/logout`, {}).subscribe({
+      complete: () => {
+        localStorage.removeItem('user_id');
+        this.router.navigate(['/login']);
+      },
+      error: () => {
+        localStorage.removeItem('user_id');
+        this.router.navigate(['/login']);
+      }
+    });
+  }
   }

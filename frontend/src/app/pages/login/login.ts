@@ -38,7 +38,6 @@ export class LoginComponent {
     this.errorMessage = '';
     this.authService.login(this.credentials).subscribe({
       next: (response) => {
-        localStorage.setItem('token', response.access_token);
         localStorage.setItem('user_id', response.user_id.toString());
         this.router.navigate(['/dashboard']);
       },
